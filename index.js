@@ -3,7 +3,7 @@
 
   This is the programmatic entry point of your bot.
   Your bot's logic resides here.
-  
+
   Here's the next steps for you:
   1. Read this file to understand how this simple bot works
   2. Read the `content.yml` file to understand how messages are sent
@@ -19,28 +19,13 @@
   Our Slack Community: https://slack.botpress.io
 */
 
+const Intent = require('./services/intent.js');
+
 module.exports = function(bp) {
-  bp.hear(/GET_STARTED|hello|hi|test|hey|holla/i, (event, next) => {
+  bp.hear(/GET_STARTED/i, (event, next) => {
     event.reply('#welcome') // See the file `content.yml` to see the block
   })
 
-  bp.hear({
-    type: /message|text/i,
-    text: /exit|bye|goodbye|quit|done|leave|stop/i
-  }, (event, next) => {
-    event.reply('#goodbye', {
-      reason: 'dont care'
-    })
-  })
-
-  bp.hear(/iask/, (event, next) => {
-    console.log(event);
-    event.reply('#iask', {
-      iol: 'something'
-    });
-  })
-
-  bp.hear({platform: 'facebook'}, (event, next) => {
-    console.log(event.raw);
-  })
+  bp.wildCard = (bp, event, send) => {
+  }
 }

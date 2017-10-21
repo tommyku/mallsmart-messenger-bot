@@ -1,21 +1,19 @@
 welcome: # this is the #welcome bloc referenced in index.js
-  - typing: true
-    text: # Picks one randomly
-      - Hey there!
-      - Hello {{user.first_name}}
-      - Good day :)
-
-goodbye:
-  - text: You are leaving because of reason {{reason}}
-  - Hope to see you back again soon! # if no other properties, you can just send a strings
-
-iask:
+  - |
+    Welcome to IFC!
+    Browse our offerings!
   - on: facebook
-    template_type: button
-    text: wtf you wanna ask
-    buttons:
-      - <{{iol}}> Random cat videos
-      - <{{iol}}> This button gives the same thing
-      - type: web_url
-        url: https://youtube.com/?q=cats
-        title: Cats on Youtube
+    template_type: generic
+    elements:
+      - title: Food & Beverage
+        image_url: https://tommyku.github.io/smartone-static/3/FNB_Cropped.png
+        buttons:
+          - <WELCOME_FOOD_BEVERAGE> Browse More
+      - title: Fashion
+        image_url: https://tommyku.github.io/smartone-static/3/Fashion_Cropped.png
+        buttons:
+          - <WELCOME_FASHION> Browse More
+      - title: Lifestyle
+        image_url: https://tommyku.github.io/smartone-static/3/lifestyle_cropped.png
+        buttons:
+          - <WELCOME_LIFESTYLE> Browse More
