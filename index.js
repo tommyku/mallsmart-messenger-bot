@@ -31,6 +31,7 @@ module.exports = function(bp) {
     type: /message|text/i,
     text: /exit|bye|goodbye|quit|done|leave|stop/i
   }, (event, next) => {
+    console.log(event);
     event.reply('#goodbye', {
       // You can pass data to the UMM bloc!
       reason: 'unknown'
