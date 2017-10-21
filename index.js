@@ -20,10 +20,41 @@
 */
 
 const Intent = require('./services/intent.js');
+const Coupon = require('./services/coupon.js');
+const MongoClient = require('mongodb').MongoClient;
+const MongoURL = 'mongodb://localhost:27017/mongo';
+let MongoDb;
+
+MongoClient.connect(MongoURL, function(err, db) {
+  MongoDb = db;
+  db.dropDatabase();
+  ['dunhill', 'Massimo Dutti', 'Ermenegildo Zegna', 'Montblanc', 'Jaeger-LeCoultre'].forEach((name) => {
+    db.collection('shops').insertOne({
+      type: 'male',
+      name: name,
+    });
+  });
+
+  const cursor = db.collection('shops').find({type: 'male'});
+  cursor.each((err, doc) => {
+    console.log(err);
+    console.log(doc);
+  })
+});
+
+const DEMO_USER_COUPON_USER = 94; // slide 18
+const DEMO_USER_ENTERTAINMENT_USER = 64; // slide 20
 
 module.exports = function(bp) {
   bp.hear(/GET_STARTED/i, (event, next) => {
     event.reply('#welcome') // See the file `content.yml` to see the block
+  })
+
+  bp.hear({ platform: 'facebook', type: 'postback' }, (event, next) => {
+    const postback = event.raw.postback;
+    if (postback.title === 'Browse More') {
+      event.reply(`#${postback.payload}`);
+    }
   })
 
   bp.wildCard = (bp, event, send) => {
