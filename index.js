@@ -19,11 +19,20 @@
   Our Slack Community: https://slack.botpress.io
 */
 
+const axios = require('axios')
+
 module.exports = function(bp) {
   // Listens for a first message (this is a Regex)
   // GET_STARTED is the first message you get on Facebook Messenger
   bp.hear(/GET_STARTED|hello|hi|test|hey|holla/i, (event, next) => {
+    console.log(event.text)
+    axios.get('https://eastus2.api.cognitive.microsoft.com/luis/v2.0/apps/8a40f0af-e9b7-4171-9e86-5a1c405007a5?subscription-key=0262b9e06ac346588c5254967b919063&timezoneOffset=0&verbose=true&q=' + event.text)
+      .then(console.log)
     event.reply('#welcome') // See the file `content.yml` to see the block
+  })
+
+  bp.hear(/whatsup|yo|show/i, (event, next) => {
+    event.reply('#menu')
   })
 
   // You can also pass a matcher object to better filter events
