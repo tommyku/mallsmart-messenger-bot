@@ -55,27 +55,31 @@ module.exports = function(bp) {
   })
 
   bp.hear({ platform: 'facebook', type: 'quick_reply' }, (event, next) => {
-    const payload = JSON.parse(event.text);
-    if (payload.intent === 'reserve') {
-      let update = {
+    let payload;
+    if (event.text[0] === '{') {
+      payload = JSON.parse(event.text);
+      if (payload.intent === 'reserve') {
+        let update = {
+          shop: payload.shop,
+          user: event.user.id,
+        };
+        DB.getInstance().collection('reservations').updateOne(update, {
+          shop: payload.shop,
+          user: event.user.id,
+          seats: payload.seats
+        });
+      }
+      sale = Recommendation.getInstantRecommendation(DB);
+      event.reply('#reservation_done', {
+        seats: payload.seats,
         shop: payload.shop,
-        user: event.user.id,
-      };
-      DB.getInstance().collection('reservations').updateOne(update, {
-        shop: payload.shop,
-        user: event.user.id,
-        seats: payload.seats
-      });
-    }
-    sale = Recommendation.getInstantRecommendation(DB);
-    event.reply('#reservation_done', {
-      seats: payload.seats,
-      shop: payload.shop
-    })
-    if (sale) {
-      bp.messenger.sendText(event.user.id, 'There are still some time before dinner!')
-      bp.messenger.sendText(event.user.id, `Interested to visit ${sale.shop} for ${sale.sale}?`)
-      bp.messenger.sendAttachment(event.user.id, 'image', sale.picture);
+        sale: sale
+      })
+    } else {
+      payload = event.text;
+      if (payload === 'MAP_YES') {
+        event.reply('#showMap');
+      }
     }
   });
 
@@ -94,7 +98,7 @@ module.exports = function(bp) {
         quick_replies: [
           { content_type: 'text', title: 'Only me', payload: JSON.stringify({shop: postback.payload, seats: '1', intent: 'reserve'}) },
           { content_type: 'text', title: '2 people', payload: JSON.stringify({shop: postback.payload, seats: '2', intent: 'reserve'}) },
-          { content_type: 'text', title: '3-4 people', payload: JSON.stringify({shop: postback.payload, seats: '3', intent: 'reserve'}) },
+          { content_type: 'text', title: '3-4 people', payload: JSON.stringify({shop: postback.payload, seats: '3-4', intent: 'reserve'}) },
           { content_type: 'text', title: 'More than 4', payload: JSON.stringify({shop: postback.payload, seats: '4+', intent: 'reserve'}) }
         ]
       });

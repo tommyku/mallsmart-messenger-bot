@@ -64,5 +64,17 @@ reservation_done:
   - |
     The reservation is completed!
     Table for {{seats}} in {{shop}} at 8pm tonight.
-  - wait: 2s
-    
+  - text: 'There are still some time before dinner!'
+    typing: 1s
+  - text: Interested to visit {{sale.shop}} for {{sale.sale}}?
+  - on: facebook
+    image: 'https://tommyku.github.io/smartone-static/89/MassimoDutti_30_off.png'
+  - text: 'May I show you the way?'
+    quick_replies:
+      - <MAP_YES> Sure
+      - <MAP_NO> Nah, I am fine
+
+showMap:
+  - text: Here you go!
+  - on: facebook
+    image: https://tommyku.github.io/smartone-static/89/MapToDutti.png
