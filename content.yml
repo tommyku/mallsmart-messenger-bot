@@ -4,25 +4,6 @@ welcome: # this is the #welcome bloc referenced in index.js
       - Hey there!
       - Hello {{user.first_name}}
 
-menu:
-  - typing: true
-    template_type: generic 
-    elements: 
-      - title: 🏦 Show me the shops
-        subtitle: payment
-        image_url: https://cdn3.iconfinder.com/data/icons/ecommerce-26/96/payment-256.png
-        buttons: 
-          - type: web_url
-            url: https://stripe.com/hk
-            title: 管理費 
-            webview_height_ratio: compact
-          - type: web_url
-            url: https://stripe.com/hk
-            title: 車位月租費 
-          - type: web_url
-            url: https://stripe.com/hk
-            title: 車位時租費 
-
 goodbye:
   - text: You are leaving because of reason {{reason}}
   - Hope to see you back again soon! # if no other properties, you can just send a strings
@@ -78,3 +59,23 @@ showMap:
   - text: Here you go!
   - on: facebook
     image: https://tommyku.github.io/smartone-static/89/MapToDutti.png
+  - typing: 1s
+    text: Remember to redeem the 20% off coupon for your dinner!
+    quick_replies:
+      - <REDEEM_COUPON> Redeem 20% off coupon!
+
+dinnerTime:
+  - text: It's about time for your dinner!
+  - text: May I show you the way to Sen-ryo?
+    quick_replies:
+      - <MAP_YES> Yap
+      - <MAP_NO> No thanks!
+
+fruitfuldinner:
+  - text: Hope you enjoyed a fruitful dinner there!
+
+joinLuckyDraw:
+  - text: Thanks for your comment!
+  - text: Are you interested in our luck draw?
+    quick_replies:
+      - <LUCKY_DRAW_YES> Join lucky draw

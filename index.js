@@ -80,8 +80,15 @@ module.exports = function(bp) {
       if (payload === 'MAP_YES') {
         event.reply('#showMap');
       }
+      if (payload === 'REDEEM_COUPON') {
+        event.reply('#fruitfuldinner');
+      }
     }
   });
+
+  bp.hear(/.*nice.*/i, (event, next) => {
+    event.reply('#joinLuckyDraw')
+  })
 
   bp.hear({ platform: 'facebook', type: 'postback' }, (event, next) => {
     const postback = event.raw.postback;
