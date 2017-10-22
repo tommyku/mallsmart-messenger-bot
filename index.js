@@ -54,6 +54,10 @@ module.exports = function(bp) {
     })
   })
 
+  bp.hear(/redeem/i, (event) => {
+    event.reply('#fruitfuldinner');
+  })
+
   bp.hear({ platform: 'facebook', type: 'quick_reply' }, (event, next) => {
     let payload;
     if (event.text[0] === '{') {

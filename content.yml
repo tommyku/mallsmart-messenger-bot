@@ -53,11 +53,9 @@ reservation_done:
   - |
     The reservation is completed!
     Table for {{seats}} in {{shop}} at 8pm tonight.
-  - text: 'There are still some time before dinner!'
-    typing: 1s
-  - text: Interested to visit {{sale.shop}} for {{sale.sale}}?
-  - on: facebook
-    image: 'https://tommyku.github.io/smartone-static/89/MassimoDutti_30_off.png'
+  - |
+    There are still some time before dinner!
+    Interested to visit {{sale.shop}} for {{sale.sale}}?
   - typing: 1s
     text: 'May I show you the way?'
     quick_replies:
