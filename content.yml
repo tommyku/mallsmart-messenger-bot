@@ -18,6 +18,22 @@ welcome: # this is the #welcome bloc referenced in index.js
         buttons:
           - <WELCOME_LIFESTYLE> Browse More
 
+postWelcome:
+  - text: Interested in having dinner here?
+  - on: facebook
+    template_type: button
+    text: Food & Beverage
+    buttons:
+      - type: postback
+        title: Asian
+        payload: <WELCOME_FOOD_BEVERAGE_ASIAN>
+      - type: postback
+        title: Western
+        payload: <WELCOME_FOOD_BEVERAGE_WESTERN>
+      - type: postback
+        title: Cafe & Others
+        payload: <WELCOME_FOOD_BEVERAGE_OTHERS>
+
 WELCOME_FOOD_BEVERAGE:
   - on: facebook
     template_type: button
