@@ -59,9 +59,9 @@ class DB {
 
         db.collection('coupons').insertOne({
           tag: 'health',
-          title: 'Ladies favorites',
-          picture: 'https://tommyku.github.io/smartone-static/1819/ShoppingVoucher.png',
-          coupon: 'Purchase for vouchers!'
+          title: 'Bobbi Brown makeup workshop at 4pm?',
+          picture: 'https://tommyku.github.io/smartone-static/24/BobbiBrown.png',
+          coupon: '3 vacancies left!'
         });
       });
     }

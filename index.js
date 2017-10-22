@@ -83,6 +83,9 @@ module.exports = function(bp) {
       if (payload == 'LUCKY_DRAW_YES') {
         event.reply('#luckydrawdone');
       }
+      if (payload == 'JOIN_YES') {
+        event.reply('#makeup_confirmed');
+      }
       if (payload == 'SCRATCH') {
         const coupons = Coupon.getCouponEntitiesForUser(94).then((data) => {
           let firstCoupon, secondCoupon;
@@ -126,6 +129,9 @@ module.exports = function(bp) {
 
   bp.hear({ platform: 'facebook', type: 'postback' }, (event, next) => {
     const postback = event.raw.postback;
+    if (postback.title == '3 vacancies left!') {
+      event.reply('#you_sure_reserve')
+    }
     if (postback.title == 'Get it!') {
       event.reply('#draw_reward');
     }

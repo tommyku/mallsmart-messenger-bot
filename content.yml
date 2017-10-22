@@ -96,3 +96,12 @@ schedule:
   - text: Find the discounts available only on today by scratching the cards!
     quick_replies:
       - <SCRATCH> Begin!
+
+you_sure_reserve:
+  - text: You are reserving Bobbi Brown makeup workshop at 4pm?
+    quick_replies:
+      - <JOIN_YES> I will take it!
+
+makeup_confirmed:
+  - text: Your reservation of the makeup workshop at 4pm is confirmed!
+  - text: Hope you would enjoy it!
