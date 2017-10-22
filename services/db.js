@@ -23,7 +23,7 @@ class DB {
         ];
         ['dunhill', 'Massimo Dutti', 'Ermenegildo Zegna', 'Montblanc', 'Jaeger-LeCoultre'].forEach((name, index) => {
           db.collection('shops').insertOne({
-            type: 'male',
+            type: 'boyfriend',
             name: name,
             picture: `https://tommyku.github.io/smartone-static/4/${pictures[index]}`
           });

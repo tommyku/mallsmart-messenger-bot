@@ -1,12 +1,4 @@
 welcome: # this is the #welcome bloc referenced in index.js
-  - typing: true
-    text: # Picks one randomly
-      - Hey there!
-      - Hello {{user.first_name}}
-
-goodbye:
-  - text: You are leaving because of reason {{reason}}
-  - Hope to see you back again soon! # if no other properties, you can just send a strings
   - |
     Welcome to IFC!
     Browse our offerings!
@@ -62,7 +54,7 @@ showMap:
   - typing: 1s
     text: Remember to redeem the 20% off coupon for your dinner!
     quick_replies:
-      - <REDEEM_COUPON> Redeem 20% off coupon!
+      - <REDEEM_COUPON> Redeem coupon
 
 dinnerTime:
   - text: It's about time for your dinner!

@@ -138,8 +138,50 @@ module.exports = function(bp) {
     console.log(event.text)
     Intent.getIntent(event.text)
       .then((result)=>{
-        console.log(result.data.topScoringIntent.intent)
-        console.log(result.data.entities)
+        const intent = result.data.topScoringIntent.intent
+        const entities = result.data.entities
+        console.log(intent);
+        console.log(entities);
+        if (intent == 'RM_RESTAURANT') {
+          const restaurants = Recommendation.getRecommendation([{entity: 'japanese'}], DB);
+          const elements = [];
+          restaurants.each((err, doc) => {
+            if (doc !== null) {
+              elements.push({
+                title: doc.name,
+                image_url: doc.picture,
+                buttons: [
+                  { type: 'postback', title: 'Reserve Now', payload: doc.name }
+                ]
+              });
+            }
+          });
+          const template = {
+            template_type: 'generic',
+            elements: elements
+          };
+          bp.messenger.sendTemplate(event.user.id, template)
+        }
+        if (intent == 'RM_FASHION') {
+          const maleShops = Recommendation.getRecommendation(entities, DB);
+          const elements = [];
+          maleShops.each((err, doc) => {
+            if (doc !== null) {
+              elements.push({
+                title: doc.name,
+                image_url: doc.picture,
+                buttons: [
+                  { type: 'postback', title: 'See latest offers', payload: doc.name }
+                ]
+              });
+            }
+          });
+          const template = {
+            template_type: 'generic',
+            elements: elements
+          };
+          bp.messenger.sendTemplate(event.user.id, template);
+        }
       })
     // call service
   }

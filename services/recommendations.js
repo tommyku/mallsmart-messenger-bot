@@ -3,7 +3,7 @@ class Recommendation {
     const tag = ((entities) => {
       return entities[0].entity;
     })(entities);
-
+    console.log(tag);
     return DB.getInstance().collection('shops').find({type: tag});
   }
 
