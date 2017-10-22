@@ -59,3 +59,8 @@ WELCOME_FOOD_BEVERAGE:
       - type: postback
         title: Cafe & Others
         payload: <WELCOME_FOOD_BEVERAGE_OTHERS>
+
+reservation_done:
+  - |
+    The reservation is completed!
+    Table for {{seats}} in {{shop}} at 8pm tonight.

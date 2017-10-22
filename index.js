@@ -21,27 +21,11 @@
 
 const axios = require('axios')
 const Intent = require('./services/intent.js');
+const Recommendation = require('./services/recommendations.js');
 const Coupon = require('./services/coupon.js');
-const MongoClient = require('mongodb').MongoClient;
-const MongoURL = 'mongodb://localhost:27017/mongo';
-let MongoDb;
+const DB = require('./services/db.js');
 
-MongoClient.connect(MongoURL, function(err, db) {
-  MongoDb = db;
-  db.dropDatabase();
-  ['dunhill', 'Massimo Dutti', 'Ermenegildo Zegna', 'Montblanc', 'Jaeger-LeCoultre'].forEach((name) => {
-    db.collection('shops').insertOne({
-      type: 'male',
-      name: name,
-    });
-  });
-
-  const cursor = db.collection('shops').find({type: 'male'});
-  cursor.each((err, doc) => {
-    console.log(err);
-    console.log(doc);
-  })
-});
+DB.initialize();
 
 const DEMO_USER_COUPON_USER = 94; // slide 18
 const DEMO_USER_ENTERTAINMENT_USER = 64; // slide 20
@@ -49,7 +33,8 @@ const DEMO_USER_ENTERTAINMENT_USER = 64; // slide 20
 module.exports = function(bp) {
   // Listens for a first message (this is a Regex)
   // GET_STARTED is the first message you get on Facebook Messenger
-  bp.hear(/GET_STARTED|hello|hi|test|hey|holla/i, (event, next) => {
+
+  bp.hear(/GET_STARTED/i, (event, next) => {
     event.reply('#welcome') // See the file `content.yml` to see the block
   })
 
@@ -69,13 +54,66 @@ module.exports = function(bp) {
     })
   })
 
-  bp.hear(/GET_STARTED/i, (event, next) => {
-       // See the file `content.yml` to see the block
+  bp.hear({ platform: 'facebook', type: 'quick_reply' }, (event, next) => {
+    const payload = JSON.parse(event.text);
+    if (payload.intent === 'reserve') {
+      let update = {
+        shop: payload.shop,
+        user: event.user.id,
+      };
+      DB.getInstance().collection('reservations').updateOne(update, {
+        shop: payload.shop,
+        user: event.user.id,
+        seats: payload.seats
+      });
+    }
+    event.reply('#reservation_done', {
+      seats: payload.seats,
+      shop: payload.shop
+    })
+  });
+
   bp.hear({ platform: 'facebook', type: 'postback' }, (event, next) => {
     const postback = event.raw.postback;
     if (postback.title === 'Browse More') {
       event.reply(`#${postback.payload}`);
     }
+    if (postback.title === 'Reserve Now') {
+      DB.getInstance().collection('reservations').insertOne({
+        shop: postback.payload,
+        user: event.user.id,
+        seats: 1
+      });
+      bp.messenger.sendText(event.user.id, 'How many people are coming?', {
+        quick_replies: [
+          { content_type: 'text', title: 'Only me', payload: JSON.stringify({shop: postback.payload, seats: '1', intent: 'reserve'}) },
+          { content_type: 'text', title: '2 people', payload: JSON.stringify({shop: postback.payload, seats: '2', intent: 'reserve'}) },
+          { content_type: 'text', title: '3-4 people', payload: JSON.stringify({shop: postback.payload, seats: '3', intent: 'reserve'}) },
+          { content_type: 'text', title: 'More than 4', payload: JSON.stringify({shop: postback.payload, seats: '4+', intent: 'reserve'}) }
+        ]
+      });
+    }
+  })
+
+  bp.hear(/jap/, (event, next) => {
+    const restaurants = Recommendation.getRecommendation([{entity: 'japanese'}], DB);
+    const elements = [];
+    restaurants.each((err, doc) => {
+      if (doc !== null) {
+        elements.push({
+          title: doc.name,
+          image_url: doc.picture,
+          buttons: [
+            { type: 'postback', title: 'Reserve Now', payload: doc.name }
+          ]
+        });
+      }
+    });
+    const template = {
+      template_type: 'generic',
+      elements: elements
+    };
+    bp.messenger.sendTemplate(event.user.id, template)
   })
 
   bp.wildCard = (bp, event, send) => {
@@ -86,6 +124,6 @@ module.exports = function(bp) {
         console.log(result.data.topScoringIntent.intent)
         console.log(result.data.entities)
       })
-    // call service 
+    // call service
   }
 }
