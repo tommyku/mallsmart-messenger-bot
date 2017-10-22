@@ -58,13 +58,15 @@ reservation_done:
   - text: Interested to visit {{sale.shop}} for {{sale.sale}}?
   - on: facebook
     image: 'https://tommyku.github.io/smartone-static/89/MassimoDutti_30_off.png'
-  - text: 'May I show you the way?'
+  - typing: 1s
+    text: 'May I show you the way?'
     quick_replies:
       - <MAP_YES> Sure
       - <MAP_NO> Nah, I am fine
 
 showMap:
-  - text: Here you go!
+  - typing: 1s
+    text: Here you go!
   - on: facebook
     image: https://tommyku.github.io/smartone-static/89/MapToDutti.png
   - typing: 1s
@@ -114,10 +116,11 @@ schedule:
       - <SCRATCH> Begin!
 
 you_sure_reserve:
-  - text: You are reserving Bobbi Brown makeup workshop at 4pm?
+  - text: Are you reserving Bobbi Brown makeup workshop at 4pm?
     quick_replies:
       - <JOIN_YES> I will take it!
 
 makeup_confirmed:
-  - text: Your reservation of the makeup workshop at 4pm is confirmed!
+  - typing: 2s
+    text: Your reservation of the makeup workshop at 4pm is confirmed!
   - text: Hope you would enjoy it!
