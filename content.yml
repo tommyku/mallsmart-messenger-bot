@@ -64,3 +64,5 @@ reservation_done:
   - |
     The reservation is completed!
     Table for {{seats}} in {{shop}} at 8pm tonight.
+  - wait: 2s
+    

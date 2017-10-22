@@ -67,10 +67,16 @@ module.exports = function(bp) {
         seats: payload.seats
       });
     }
+    sale = Recommendation.getInstantRecommendation(DB);
     event.reply('#reservation_done', {
       seats: payload.seats,
       shop: payload.shop
     })
+    if (sale) {
+      bp.messenger.sendText(event.user.id, 'There are still some time before dinner!')
+      bp.messenger.sendText(event.user.id, `Interested to visit ${sale.shop} for ${sale.sale}?`)
+      bp.messenger.sendAttachment(event.user.id, 'image', sale.picture);
+    }
   });
 
   bp.hear({ platform: 'facebook', type: 'postback' }, (event, next) => {

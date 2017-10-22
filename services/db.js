@@ -44,6 +44,11 @@ class DB {
             picture: `https://tommyku.github.io/smartone-static/67/${restaurantPictures[index]}`
           });
         });
+
+        const sales = [{shop: 'Massimo Dutti', direction: 'https://tommyku.github.io/smartone-static/89/MapToDutti.png', picture: 'https://tommyku.github.io/smartone-static/89/MassimoDutti_30_off.png', sale: '30% sales'}];
+        sales.forEach((sale) => {
+          db.collection('quick_sales').insertOne(sale);
+        });
       });
     }
   }
