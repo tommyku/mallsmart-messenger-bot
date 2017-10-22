@@ -71,3 +71,28 @@ joinLuckyDraw:
   - text: Are you interested in our luck draw?
     quick_replies:
       - <LUCKY_DRAW_YES> Join lucky draw
+
+luckydrawdone:
+  - text: Congraulations! You can pick one of the following prizes!
+  - on: facebook
+    template_type: generic
+    elements:
+      - title: 3 hours parking for free!
+        image_url: https://tommyku.github.io/smartone-static/13/CarParkDiscount.png
+        buttons:
+          - <GET_DRAW_REWARD> Get it!
+      - title: Grab a drink and chill!
+        image_url: https://tommyku.github.io/smartone-static/13/latenighthappyhour.png
+        buttons:
+          - <GET_DRAW_REWARD> Get it!
+
+draw_reward:
+  - |
+    Here is the redeem code for parking: xxxgofggfgadf
+    You can share this code with your friend! He or she can use once getting started!
+
+schedule:
+  - text: Good morning! You scheduled a yoga class by Pure Fitness today at 2pm.
+  - text: Find the discounts available only on today by scratching the cards!
+    quick_replies:
+      - <SCRATCH> Begin!

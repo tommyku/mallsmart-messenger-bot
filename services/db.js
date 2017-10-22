@@ -49,6 +49,20 @@ class DB {
         sales.forEach((sale) => {
           db.collection('quick_sales').insertOne(sale);
         });
+
+        db.collection('coupons').insertOne({
+          tag: 'cafe',
+          title: 'Go to your favorite Cafe!',
+          picture: 'https://tommyku.github.io/smartone-static/1819/AsianRestaurant.png',
+          coupon: 'Redeem 20% off coupon!'
+        });
+
+        db.collection('coupons').insertOne({
+          tag: 'health',
+          title: 'Ladies favorites',
+          picture: 'https://tommyku.github.io/smartone-static/1819/ShoppingVoucher.png',
+          coupon: 'Purchase for vouchers!'
+        });
       });
     }
   }

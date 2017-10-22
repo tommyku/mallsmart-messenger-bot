@@ -38,10 +38,6 @@ module.exports = function(bp) {
     event.reply('#welcome') // See the file `content.yml` to see the block
   })
 
-  bp.hear(/whatsup|yo|show/i, (event, next) => {
-    event.reply('#menu')
-  })
-
   // You can also pass a matcher object to better filter events
   bp.hear({
     type: /message|text/i,
@@ -77,13 +73,51 @@ module.exports = function(bp) {
       })
     } else {
       payload = event.text;
-      if (payload === 'MAP_YES') {
+      console.log(payload);
+      if (payload == 'MAP_YES') {
         event.reply('#showMap');
       }
-      if (payload === 'REDEEM_COUPON') {
+      if (payload == 'REDEEM_COUPON') {
         event.reply('#fruitfuldinner');
       }
+      if (payload == 'LUCKY_DRAW_YES') {
+        event.reply('#luckydrawdone');
+      }
+      if (payload == 'SCRATCH') {
+        const coupons = Coupon.getCouponEntitiesForUser(94).then((data) => {
+          let firstCoupon, secondCoupon;
+          const firstTag = data.data.Results.output1.value.Values[0][1];
+          const secondTag = data.data.Results.output1.value.Values[0][2];
+          const firstCouponPromise = Coupon.getCouponInTag(firstTag, DB);
+          const secondCouponPromise = Coupon.getCouponInTag(secondTag, DB);
+          Promise.all([firstCouponPromise, secondCouponPromise]).then((values) => {
+            firstCoupon = values[0][0];
+            secondCoupon = values[1][0];
+            const elements = [];
+            [firstCoupon, secondCoupon].forEach((doc) => {
+              if (doc !== null) {
+                elements.push({
+                  title: doc.title,
+                  image_url: doc.picture,
+                  buttons: [
+                    { type: 'postback', title: doc.coupon, payload: 'CC' }
+                  ]
+                });
+              }
+            });
+            const template = {
+              template_type: 'generic',
+              elements: elements
+            };
+            bp.messenger.sendTemplate(event.user.id, template)
+          });
+        })
+      }
     }
+  });
+
+  bp.hear(/schedule/i, (event, next) => {
+    event.reply('#schedule')
   });
 
   bp.hear(/.*nice.*/i, (event, next) => {
@@ -92,6 +126,9 @@ module.exports = function(bp) {
 
   bp.hear({ platform: 'facebook', type: 'postback' }, (event, next) => {
     const postback = event.raw.postback;
+    if (postback.title == 'Get it!') {
+      event.reply('#draw_reward');
+    }
     if (postback.title === 'Browse More') {
       event.reply(`#${postback.payload}`);
     }
@@ -110,27 +147,6 @@ module.exports = function(bp) {
         ]
       });
     }
-  })
-
-  bp.hear(/jap/, (event, next) => {
-    const restaurants = Recommendation.getRecommendation([{entity: 'japanese'}], DB);
-    const elements = [];
-    restaurants.each((err, doc) => {
-      if (doc !== null) {
-        elements.push({
-          title: doc.name,
-          image_url: doc.picture,
-          buttons: [
-            { type: 'postback', title: 'Reserve Now', payload: doc.name }
-          ]
-        });
-      }
-    });
-    const template = {
-      template_type: 'generic',
-      elements: elements
-    };
-    bp.messenger.sendTemplate(event.user.id, template)
   })
 
   bp.wildCard = (bp, event, send) => {

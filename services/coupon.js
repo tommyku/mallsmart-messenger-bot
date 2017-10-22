@@ -27,6 +27,13 @@ class Coupon {
     };
     return axios.request(request);
   }
+
+  static getCouponInTag(tag, DB) {
+    const cursor = DB.getInstance().collection('coupons').find({
+      tag: tag
+    })
+    return cursor.toArray();
+  }
 }
 
 module.exports = Coupon;

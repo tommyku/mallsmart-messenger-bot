@@ -26,7 +26,7 @@ class Recommendation {
     }
   }
 
-  static getRecommendationForUser(type, user_id, DB) {
+  static getRecommendationForUser(user_id, DB) {
   }
 }
 
